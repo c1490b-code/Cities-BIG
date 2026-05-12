@@ -1,0 +1,60 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Represents a citizen or city official registered in the system.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["official", "citizen"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "RegistryEntry": {
+      "title": "Registry Entry",
+      "description": "A formal record of civil completion signed by a city representative and verified by the Regional President.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "cityId": { "type": "string" },
+        "cityName": { "type": "string" },
+        "region": { "type": "string" },
+        "representativeUid": { "type": "string" },
+        "representativeName": { "type": "string" },
+        "representativeEmail": { "type": "string" },
+        "termsSigned": { "type": "boolean" },
+        "licenseSigned": { "type": "boolean" },
+        "contractSigned": { "type": "boolean" },
+        "leaseSigned": { "type": "boolean" },
+        "utilitySigned": { "type": "boolean" },
+        "presidentialSignature": { "type": "string" },
+        "presidentialSeal": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["pending", "verified", "archived"] }
+      },
+      "required": ["cityName", "region", "representativeUid", "termsSigned", "licenseSigned", "contractSigned", "leaseSigned", "utilitySigned"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "User",
+      "description": "Public user profiles."
+    },
+    "users/{userId}/private/info": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" }
+        }
+      },
+      "description": "Private user sensitive information."
+    },
+    "registries/{registryId}": {
+      "schema": "RegistryEntry",
+      "description": "Formal registry of civil completion documents."
+    }
+  }
+}
